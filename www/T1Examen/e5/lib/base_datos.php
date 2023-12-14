@@ -168,6 +168,22 @@ function get_ultima_donacion($conexion, $idDonante)
     return $proxima_donacion;
 }
 
+function get_informe_donaciones($conexion, $fechaIn, $fechaFin)
+{
+    $proxima_donacion = null;
+    $consulta = $conexion->prepare("SELECT donantes.nombre, donantes.apellidos, historico.fechaDonacion, historico.proximaDonacion
+                                                          FROM donantes, historico 
+                                                          WHERE donantes.id=historico.idDonante
+                                                          AND fechaDonacion BETWEEN '$fechaIn' and '$fechaFin'
+                                                          ORDER BY historico.fechaDonacion DESC");
+    $consulta->execute();
+    while ($fila = $consulta->fetch()) {
+        $proxima_donacion = $fila['proximaDonacion'];
+    }
+
+    return $proxima_donacion;
+}
+
 function cerrar_conexion($conexion)
 {
     $conexion = null;

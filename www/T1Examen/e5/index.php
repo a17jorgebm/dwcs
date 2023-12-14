@@ -36,6 +36,7 @@ crear_tabla_historico($conexion);
         <a class="btn btn-primary" href="listar_donantes.php" role="button">Listar donantes</a>
         <a class="btn btn-primary" href="listar_administradores.php" role="button">Listar administradores</a>
         <a class="btn btn-primary" href="dar_alta_administrador.php" role="button">Nuevos administradores</a>
+        <a class="btn btn-primary" href="informes.php" role="button">Informes</a>
     </div>
 
     <footer>
