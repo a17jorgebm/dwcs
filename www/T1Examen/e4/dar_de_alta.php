@@ -33,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 
         $conexion = get_conexion();
         seleccionar_bd_tienda($conexion);
-        dar_alta_usuario($nombre, $apellidos, $edad, $provincia);
+        //JBM no mandaba la conexion a la función, solo los datos del usuario
+        dar_alta_usuario($conexion,$nombre, $apellidos, $edad, $provincia);
         $mensajes = "Usuario dado de alta correctamente";
         cerrar_conexion($conexion);
     }

@@ -44,7 +44,8 @@ seleccionar_bd_tienda($conexion);
 $resultados = listar_usuarios($conexion);
 
 if (!is_bool($resultados) && $resultados->num_rows > 0) {
-    while ($row = $resultados->fetch_asoc()) {
+    //JBM estaba mal escrita la funcion fetch_assoc()
+    while ($row = $resultados->fetch_assoc()) {
         echo "<tr>";
         echo "<td>" . $row['nombre'] . "</td> ";
         echo "<td>" . $row['apellidos'] . "</td> ";

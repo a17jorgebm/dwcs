@@ -25,7 +25,8 @@ if (isset($_POST["submit"])) {
     if (isset($_GET["id"])) {
         $id_user = $_GET["id"];
         
-        $user = get_usuario($conexion);
+        //JBM no pasaba como parametro el id de usuario
+        $user = get_usuario($conexion,$id_user);
 
         if ($user->num_rows > 0) {
             $row = $user->fetch_assoc();

@@ -23,6 +23,8 @@ include "lib/utilidades.php";
 
 <?php
 
+//JBM no tenia el objeto de conexion creado
+$conexion=get_conexion();
 $seleccion_bd = seleccionar_bd_tienda($conexion);
 
 $id = $_GET["id"];
