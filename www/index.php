@@ -8,7 +8,7 @@
     <body>
         <div class="container-fluid">
             <?php
-                echo "<h1>¡Hola, soy Jorge Blanco Mariño, Bienvenido al módulo de DWCS!</h1>"; proba examen;
+                echo "<h1>¡Hola, soy Jorge Blanco Mariño, Bienvenido al módulo de DWCS!</h1>";
             ?>
         </div>
     </body>
