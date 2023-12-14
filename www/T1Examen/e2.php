@@ -11,6 +11,16 @@
   </head>
   <body>
     <div class="container">
+      <?php
+      $e=random_int(1,30);
+      //var_dump($e);
+      for($i=1;$i<=$e;$i++){
+          for($z=0;$z<$i;$z++){
+            echo "a";
+          }
+          echo "<br>";
+      }
+      ?>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
