@@ -11,6 +11,10 @@
   </head>
   <body>
     <div class="container">
+      <?php
+        require('e3.php');
+        imprimirTabla($coches);
+      ?>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
