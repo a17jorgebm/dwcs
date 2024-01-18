@@ -8,7 +8,8 @@ function test_input($datos)
     return $datos;
 }
 
-function get_mensajes_html_format($mensajes)
+function
+get_mensajes_html_format($mensajes)
 {
     $resultado = "";
 

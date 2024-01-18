@@ -3,6 +3,7 @@ define('__db__','tienda');
 function getConexion(){
     try{
         $con = new PDO('mysql:host=db;dbname='.__db__,'root','test');
+        $con->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
         return $con;
     }catch (PDOException $e){
         if ($e->getCode()==1049){
@@ -13,60 +14,121 @@ function getConexion(){
 
 }
 
+function crearUsuario(){
+    $con=getConexion();
+    $mensaje=[];
+
+    try{
+        $nombre=limparCampo($_POST['nome']);
+        $apellidos=limparCampo($_POST['apellidos']);
+        $edad=limparCampo($_POST['edad']);
+        $provincia=limparCampo($_POST['provincia']);
+
+        if(empty($nombre) || empty($apellidos) || empty($provincia) || empty($edad)){
+            $mensaje[]=array('error'=>"Faltan campos por cubrir, no se ha podido crear el usuario");
+            return $mensaje;
+        }
+
+        $sql="insert into usuarios(nombre,apellidos,edad,provincia) values(:nombre,:apellidos,:edad,:provincia)";
+        $ejecucion=$con->prepare($sql);
+        $ejecucion->execute(array('nombre'=>$nombre,'apellidos'=>$apellidos,'edad'=>$edad,'provincia'=>$provincia));
+
+        $mensaje[]=array('success'=>"Se ha creado el usuario correctamente");
+
+
+    }catch (PDOException $e){
+        $mensaje[]=array('error'=>"Ha ocurrido un error al crear el usuario". $e->getMessage());
+    }
+
+    return $mensaje;
+}
+
 function pillarUsuarios(){
     $con = getConexion();
 
     try{
-        $select = "select * from usuarios where id=:id;";
-        $prepare = $con->prepare($select);
-        $prepare->execute(array('id'=>1));
-
-
-        $prepare->setFetchMode(PDO::FETCH_ASSOC);
-        $usuarios=$prepare->fetchAll();
-        var_dump($usuarios);
-        die();
-//        $prepare->setFetchMode(PDO::FETCH_ASSOC);
-//        while ($usuario = $prepare->fetch()){
-//            echo "--------------------------";
-//            echo $usuario['nombre'].' ';
-//            echo $usuario['apellidos'].' ';
-//            echo $usuario['edad'].' ';
-//            echo $usuario['provincia'].' ';
-//        }
+        $sql="select * from usuarios";
+        $ejecucion=$con->prepare($sql);
+        $ejecucion->setFetchMode(PDO::FETCH_ASSOC);
+        $ejecucion->execute();
+        return $ejecucion;
     }catch (PDOException $e){
-        echo "pasou algo: ".$e->getMessage();
+        die();
     }
 }
 
-function insertaUsuarios(){
+function getDatosUsuario($id){
     $con=getConexion();
-
     try{
-        $con->beginTransaction();
-        for ($i=0;$i<100;$i++){
-            $inserts="
-                insert into usuarios(nombre, apellidos, edad, provincia)
-                values(:nombre,:apellidos,:edad,:provincia);
-            ";
-            $preparao= $con->prepare($inserts);
-            $rand="paco";
-            $rand1=1;
-            $preparao->bindParam(':nombre',$rand,PDO::PARAM_STR);
-            $preparao->bindParam(':apellidos',$rand,PDO::PARAM_STR);
-            $preparao->bindParam(':edad',$rand1,PDO::PARAM_INT);
-            $preparao->bindParam(':provincia',$rand,PDO::PARAM_STR);
+        $sql='select id,nombre,apellidos,edad,provincia from usuarios where id=:id';
+        $smtp=$con->prepare($sql);
+        $smtp->setFetchMode(PDO::FETCH_ASSOC);
+        $smtp->execute(array('id'=>$id));
+        $datos=$smtp->fetchAll();
+        return isset($datos[0]) ? $datos[0] : null;
+    }catch (PDOException $e){
+        return null;
+    }
+}
 
-            $preparao->execute();
+function editarUsuario(){
+    $con=getConexion();
+    $mensaje=[];
+    try{
+        $id=intval(isset($_POST['id']) ? limparCampo($_POST['id']) : null);
+        $nombre=isset($_POST['nome']) ? limparCampo($_POST['nome']) : null;
+        $apellidos=isset($_POST['apellidos']) ? limparCampo($_POST['apellidos']) : null;
+        $edad=isset($_POST['edad']) ? limparCampo($_POST['edad']) : null;
+        $provincia=isset($_POST['provincia']) ? limparCampo($_POST['provincia']) : null;
+
+        if (is_null($nombre) || is_null($apellidos) || is_null($edad) || is_null($provincia)){
+            $mensaje[]=array('error'=>'No se han completado todos los campos');
+            return $mensaje;
         }
 
-        $con->commit();
-        echo "Usuario insertados: 100";
+        $sql="update usuarios set nombre=:nombre,apellidos=:apellidos,edad=:edad,provincia=:provincia where id=:id";
+        $smtp=$con->prepare($sql);
+        $smtp->bindValue('nombre',$nombre);
+        $smtp->bindValue('apellidos',$apellidos);
+        $smtp->bindValue('edad',$edad,PDO::PARAM_INT);
+        $smtp->bindValue('provincia',$provincia);
+        $smtp->bindValue('id',$id,PDO::PARAM_INT);
+        $smtp->execute();
+
+        $mensaje[]=array('success'=>'Se ha editado el usuario correctamente');
+        return $mensaje;
 
     }catch (PDOException $e){
-        $con->rollBack();
-        echo "uf: ".$e->getMessage();
+        $mensaje[]=array('error'=>'Ha ocurrido un error al editar los datos de usuario');
+        return $mensaje;
     }
+}
+
+function eliminarUsuario(){
+    $con = getConexion();
+    $mensajes=[];
+    try{
+        $usuario=isset($_GET['user'])?$_GET['user']:null;
+        if (is_null($usuario)){
+            $mensajes[]=array('error'=>'No se ha indicado el usuario a eliminar');
+            return $mensajes;
+        }
+
+        $sql='delete from usuarios where id=:userId';
+        $smtp=$con->prepare($sql);
+        $smtp->execute(array('userId'=>$usuario));
+        if ($smtp->rowCount()==1){
+            $mensajes[]=array('success'=>'El usuario ha sido eliminado');
+        }
+        else{
+            $mensajes[]=array('error'=>'El usuario no existe');
+        }
+
+    }catch (PDOException $e){
+        $mensajes['error']=['error'=>"No se ha podido eliminar el usuario"];
+    }
+
+    return $mensajes;
 }
 
 function crearBd(){
@@ -138,9 +200,25 @@ function crearBd(){
 
         $con->exec($sqlTabla);
     }catch (PDOException $e){
-        echo "error: ".$e->getMessage();
-        die();
+        return false;
     }
 
     return true;
+}
+
+function limparCampo($campo){
+    return htmlspecialchars(stripslashes(trim($campo)));
+}
+
+function imprimeMensajes($mensajes){
+    foreach ($mensajes as $arrayMensaje){
+        foreach ($arrayMensaje as $tipo=>$mensaje){
+            if ($tipo=='error'){
+                echo "<p style='background: red'>$mensaje</p>";
+            }
+            if ($tipo=='success'){
+                echo "<p style='background: green'>$mensaje</p>";
+            }
+        }
+    }
 }
