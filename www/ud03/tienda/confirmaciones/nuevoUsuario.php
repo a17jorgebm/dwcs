@@ -1,5 +1,6 @@
 <?php
     require("../funcions.php");
+    visitas();
 
     if ($_SERVER['REQUEST_METHOD']=='POST'){
         $mensaje=crearUsuario();

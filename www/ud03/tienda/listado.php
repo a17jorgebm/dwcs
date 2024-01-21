@@ -1,6 +1,7 @@
 <?php
 
 require ("funcions.php");
+visitas();
 $usuarios=pillarUsuarios();
 
 ?>

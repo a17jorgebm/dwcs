@@ -1,5 +1,6 @@
 <?php
 require("../funcions.php");
+visitas();
 
 $mensaje=editarUsuario();
 ?>

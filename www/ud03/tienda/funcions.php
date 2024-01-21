@@ -132,48 +132,6 @@ function eliminarUsuario(){
 }
 
 function crearBd(){
-
-//    @$con = new mysqli('db','root','test');
-//
-//    if($con->connect_errno){
-//        echo "Eror en mysqli: ".$con->connect_error;
-//        die();
-//    }
-//
-//    $sqlBd = "
-//        create database if not exists tienda;
-//    ";
-//
-//    $con->select_db('tienda');
-//    $sqlTabla="
-//                create table if not exists usuarios(
-//                id int auto_increment primary key,
-//                nombre varchar(50),
-//                apellidos varchar(50),
-//                edad int,
-//                provincia varchar(50)
-//            );
-//    ";
-//    if ($con->query($sqlBd)){
-//        echo "BD Creada correctamente";
-//    }
-//    else{
-//        echo "Mal creada:".$con->error;
-//        die();
-//    }
-//
-//    if ($con->query($sqlTabla)){
-//        echo "Tabla Creada correctamente";
-//    }
-//    else{
-//        echo "Mal creada:".$con->error;
-//        die();
-//    }
-//
-//    $con->close();
-
-
-
     $servidor='db';
     $user='root';
     $pass='test';
@@ -196,9 +154,34 @@ function crearBd(){
             );
         ";
 
+        $sqlTablaProductos="
+            create table if not exists ".__db__.".productos(
+                id int primary key auto_increment not null,
+                nombre varchar(50) not null,
+                descripcion varchar(100) not null,
+                precio float not null,
+                unidades float not null
+            );
+        ";
+
+        //cambiase a tabla de productos e añadese unha nova tabla para poder insertar varias fotos
+        $sqlFotos="
+            create table if not exists ".__db__.".productos_fotos(
+                id int primary key auto_increment not null,
+                producto_id int not null,
+                foto blob not null,
+                foreign key(producto_id) references productos(id) on update cascade on delete cascade
+            );
+        ";
+
         $con->exec($sqlBD);
 
         $con->exec($sqlTabla);
+
+        $con->exec($sqlTablaProductos);
+
+        $con->exec($sqlFotos);
+
     }catch (PDOException $e){
         return false;
     }
@@ -220,5 +203,85 @@ function imprimeMensajes($mensajes){
                 echo "<p style='background: green'>$mensaje</p>";
             }
         }
+    }
+}
+
+function visitas(){
+    session_start();
+    if (isset($_SESSION['visitas'])){
+        return ++$_SESSION['visitas'];
+    }else{
+        return $_SESSION['visitas']=1;
+    }
+}
+
+
+##IDIOMAS------------
+define('IDIOMAS_DISPONIBLES',[
+    1=>'Castellano',
+    2=>'Inglés',
+    3=>'Gallego',
+    4=>'Francés'
+]);
+define('TRADUCCIONES',[
+    1=>'Bienvenido a mi página!',
+    2=>'Welcome to my page!',
+    3=>'Benvido a miña páxina!',
+    4=>'Bienvenue sur ma page!'
+]);
+define('IDIOMA_DEFECTO',1);
+function getIdioma(){
+    if (isset($_COOKIE['idioma'])){
+        return $_COOKIE['idioma'];
+    }
+    return IDIOMA_DEFECTO;
+}
+
+function setIdioma($idiomaId){
+    if (array_key_exists($idiomaId,IDIOMAS_DISPONIBLES)){
+        setcookie('idioma',$idiomaId,time()+60*60*24);
+    }else{
+        setcookie('idioma',IDIOMA_DEFECTO,time()+60*60*24);
+    }
+}
+
+#FICHEIROS
+define('MENSAJES_PRODUCTO',[
+    0=>'Se ha creado el producto correctamente',
+    1=>'Debe subir al menos una foto del producto',
+    2=>'Ninguna de las fotos puede superar los 50MB',
+    3=>'Ha ocurrido un error al subir los archivos'
+]);
+define('DIR_BASE_FILES','uploads/');
+define('DIR_TEXTO','texto/');
+define('DIR_IMG','imagen/');
+define('DIR_PDF','pdf/');
+define('DIR_OTROS','otros/');
+function comprobarTamanho($tamanho){
+    return $tamanho<=500000;
+}
+
+function saberExtension($nome){
+    return pathinfo($nome,PATHINFO_EXTENSION);
+}
+
+function directorioGuardado($name){
+    $extension=saberExtension($name);
+    $directorio='';
+    switch ($extension){
+        case 'txt':
+            $directorio=DIR_BASE_FILES.DIR_TEXTO;
+            break;
+        case 'png':
+        case 'jpg':
+        case 'jpeg':
+        case 'gif':
+            $directorio=DIR_BASE_FILES.DIR_IMG;
+            break;
+        case 'pdf':
+            $directorio=DIR_BASE_FILES.DIR_PDF;
+            break;
+        default:
+            $directorio=DIR_BASE_FILES.DIR_OTROS;
     }
 }

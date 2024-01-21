@@ -1,5 +1,6 @@
 <?php
 require ('funcions.php');
+visitas();
 
 $usuario=(isset($_GET['user']))?$_GET['user']:null;
 if (!is_null($usuario)){
