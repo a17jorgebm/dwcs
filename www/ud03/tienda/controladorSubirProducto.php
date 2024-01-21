@@ -49,7 +49,9 @@ try{
     //gardanse no servidor
     for ($i=0;$i<count($ficheros['name']);$i++){
         $directorio=directorioGuardado($ficheros['name'][$i]);
-        move_uploaded_file($ficheros['tmp_name'][$i],$directorio.basename($ficheros['name'][$i]));
+        if (!move_uploaded_file($ficheros['tmp_name'][$i],$directorio.basename($ficheros['name'][$i]))){
+            throw new Exception();
+        };
     }
 
     $con->commit();

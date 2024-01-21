@@ -284,4 +284,5 @@ function directorioGuardado($name){
         default:
             $directorio=DIR_BASE_FILES.DIR_OTROS;
     }
+    return $directorio;
 }
