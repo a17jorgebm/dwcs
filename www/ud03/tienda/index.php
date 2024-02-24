@@ -1,5 +1,6 @@
 <?php
 require('funcions.php');
+comprobarLogin();
 $visitas=visitas();
 
 $idiomaId=getIdioma();

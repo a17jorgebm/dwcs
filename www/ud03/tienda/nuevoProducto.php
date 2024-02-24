@@ -1,5 +1,6 @@
 <?php
 require ('funcions.php');
+comprobarLogin();
 visitas();
 if (isset($_GET['msg'])){
     if (array_key_exists($_GET['msg'],MENSAJES_PRODUCTO)){

@@ -1,6 +1,9 @@
 <?php
 require 'funcions.php';
 
+ini_set('upload_max_filesize','50M');
+ini_set('post_max_size','51M');
+
 //comprobamos que existen ficheros
 $ficheros=($_FILES['fotos']['tmp_name'][0]!='') ? $_FILES['fotos'] : null;
 if (is_null($ficheros)){

@@ -1,7 +1,8 @@
 <?php
-
 require ("funcions.php");
+comprobarLogin();
 visitas();
+crearBd();
 $usuarios=pillarUsuarios();
 
 ?>

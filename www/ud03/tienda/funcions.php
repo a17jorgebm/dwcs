@@ -7,7 +7,7 @@ function getConexion(){
         return $con;
     }catch (PDOException $e){
         if ($e->getCode()==1049){
-            if(crearBd()) getConexion(); //si no existe la base de datos se crea
+            if(crearBd()) return getConexion(); //si no existe la base de datos se crea
         }
         die();
     }
@@ -20,18 +20,21 @@ function crearUsuario(){
 
     try{
         $nombre=limparCampo($_POST['nome']);
+        $password=limparCampo($_POST['password']);
         $apellidos=limparCampo($_POST['apellidos']);
         $edad=limparCampo($_POST['edad']);
         $provincia=limparCampo($_POST['provincia']);
 
-        if(empty($nombre) || empty($apellidos) || empty($provincia) || empty($edad)){
+        if(empty($nombre) || empty($password) || empty($apellidos) || empty($provincia) || empty($edad)){
             $mensaje[]=array('error'=>"Faltan campos por cubrir, no se ha podido crear el usuario");
             return $mensaje;
         }
 
-        $sql="insert into usuarios(nombre,apellidos,edad,provincia) values(:nombre,:apellidos,:edad,:provincia)";
+        $password=password_hash($password,PASSWORD_DEFAULT);
+
+        $sql="insert into usuarios(nombre,password,apellidos,edad,provincia) values(:nombre,:password,:apellidos,:edad,:provincia)";
         $ejecucion=$con->prepare($sql);
-        $ejecucion->execute(array('nombre'=>$nombre,'apellidos'=>$apellidos,'edad'=>$edad,'provincia'=>$provincia));
+        $ejecucion->execute(array('nombre'=>$nombre,'password'=>$password,'apellidos'=>$apellidos,'edad'=>$edad,'provincia'=>$provincia));
 
         $mensaje[]=array('success'=>"Se ha creado el usuario correctamente");
 
@@ -148,6 +151,7 @@ function crearBd(){
             create table if not exists ".__db__.".usuarios(
                 	id int auto_increment primary key,
                     nombre varchar(50),
+                    password varchar(60),
                     apellidos varchar(50),
                     edad int,
                     provincia varchar(50)
@@ -175,22 +179,27 @@ function crearBd(){
         ";
 
         $con->exec($sqlBD);
-
         $con->exec($sqlTabla);
-
         $con->exec($sqlTablaProductos);
-
         $con->exec($sqlFotos);
+        return true;
 
     }catch (PDOException $e){
         return false;
     }
 
-    return true;
 }
 
 function limparCampo($campo){
     return htmlspecialchars(stripslashes(trim($campo)));
+}
+
+function comprobarCamposObligatorios(Array $campos){
+    foreach ($campos as $campo){
+        if (is_null($campo)) return false;
+        if (empty($campo)) return false;
+    }
+    return true;
 }
 
 function imprimeMensajes($mensajes){
@@ -207,7 +216,9 @@ function imprimeMensajes($mensajes){
 }
 
 function visitas(){
-    session_start();
+    if (session_status()==PHP_SESSION_NONE){
+        session_start();
+    }
     if (isset($_SESSION['visitas'])){
         return ++$_SESSION['visitas'];
     }else{
@@ -258,7 +269,7 @@ define('DIR_IMG','imagen/');
 define('DIR_PDF','pdf/');
 define('DIR_OTROS','otros/');
 function comprobarTamanho($tamanho){
-    return $tamanho<=500000;
+    return (($tamanho/1024)/1024)<=50;
 }
 
 function saberExtension($nome){
@@ -285,4 +296,12 @@ function directorioGuardado($name){
             $directorio=DIR_BASE_FILES.DIR_OTROS;
     }
     return $directorio;
+}
+
+//tarea 4 login
+function comprobarLogin(){
+    session_start();
+    if (!isset($_SESSION['nombre'])){
+        header('Location: login.php');
+    }
 }
