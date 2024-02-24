@@ -1,6 +1,8 @@
 <?php
 namespace ud05;
 
+use Contacto;
+
 require 'Contacto.php';
 
 $contacto=new Contacto('pepe','villuela',382748930);

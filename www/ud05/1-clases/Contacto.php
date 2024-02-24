@@ -1,6 +1,5 @@
 <?php
 
-namespace ud05;
 class Contacto
 {
     private string $nombre;
