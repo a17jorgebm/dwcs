@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Datos de usuario para validar (en un caso real, estos datos se obtendrían de una base de datos)
 $usuarios = array(
@@ -8,11 +9,13 @@ $usuarios = array(
 );
 
 // Obtener los datos del formulario
+$username=$_POST['username']??null;
+$password=$_POST['password']??null;
 
 // Validar las credenciales
 if (isset($usuarios[$username]) && $usuarios[$username] === $password) {
     // Iniciar sesión
-   
+    $_SESSION['username']=$username;
     header('Location: welcome.php');
     exit();
 } else {
