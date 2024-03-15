@@ -20,6 +20,16 @@
         <?php
         
         // Mostrar las notas guardadas en forma de lista
+        $directorio=opendir("notas");
+        echo "<ul>";
+        if($directorio){
+            while(($archivo=readdir($directorio))!=false){
+                if($archivo!='.'&&$archivo!='..'){
+                    echo "<li>$archivo</li>";
+                }
+            }
+        }
+        echo "</ul>";
         ?>
     </ul>
 </body>
