@@ -3,7 +3,7 @@
 function camposObligatoriosCompletados($campos){
     foreach($campos as $campo){
         if($campo===null) return false;
-        if($campo='') return false;
+        if($campo=='') return false;
     }
 
     return true;
