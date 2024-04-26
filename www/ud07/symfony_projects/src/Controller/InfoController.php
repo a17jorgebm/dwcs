@@ -17,36 +17,6 @@ class InfoController extends AbstractController{
     public function jefes(){
         $bosses = array(
             array(
-                "name" => "Asylum Demon",
-                "description" => "Un demonio que te encuentras al principio del juego en el Asilo del Norte. Es una introducción al combate de jefes en el juego.",
-                "image"=>"images\bosses\asilum-demon.jpg"
-            ),
-            array(
-                "name" => "Taurus Demon",
-                "description" => "Un demonio armado con un martillo gigante que se encuentra en el Puente del Dragón Rojo. Puedes enfrentarlo después de atravesar el Asilo del Norte.",
-                "image"=>"images/bosses/taurus-demon.jpg"
-            ),
-            array(
-                "name" => "Bell Gargoyles",
-                "description" => "Dos gárgolas que protegen la campana en la Parroquia de los No Muertos. Es un combate que implica luchar contra múltiples enemigos.",
-                "image"=>"images\bosses\bell-gargoils.jpg"
-            ),
-            array(
-                "name" => "Capra Demon",
-                "description" => "Un demonio que te enfrentas en un espacio cerrado junto con dos perros. Es conocido por su combate rápido y desafiante.",
-                "image"=>"images\bosses\capra-demon.jpg"
-            ),
-            array(
-                "name" => "Gaping Dragon",
-                "description" => "Un dragón aberrante que habita en las profundidades de Blighttown. Su tamaño masivo y ataques poderosos lo hacen intimidante.",
-                "image"=>"images\bosses\gaping-dragon.PNG"
-            ),
-            array(
-                "name" => "Quelaag, the Chaos Witch",
-                "description" => "Una bruja con cuerpo de araña que protege la Segunda Campana del Despertar. Es un jefe que requiere habilidades de esquiva y resistencia al fuego.",
-                "image"=>"images\bosses\queelag-witch.PNG"
-            ),
-            array(
                 "name" => "Iron Golem",
                 "description" => "Un golem de hierro que defiende la entrada a Anor Londo en la Fortaleza de Sen. Es un enemigo lento pero poderoso.",
                 "image"=>"images\bosses\iron-golem.PNG"
