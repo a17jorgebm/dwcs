@@ -58,3 +58,13 @@ if (count($_COOKIE)>0){
     ...
 }
 ````
+
+
+# TEMA 7 SYMFONY
+### Paquetes importantes
+Descarganse todas facendo `composer require nomePaquete`, usa Flex de Symfony, que é unha extension de composer que facilita muito a descarga de paquetes e as depedencias de estes
+
+* `templates` -> para usar twig, o gestor de plantillas
+* `debug` -> barra de depuracion abaixo no navegador
+* `symfony/asset` -> para importación de archivos estaticos como imagenes e asi en twig, ej: `{{ asset('css/imagen.jpg') }}`. Por ejemplo se a imagen cambia automaticamente añadelle para que o cache do cliente a actualice
+
