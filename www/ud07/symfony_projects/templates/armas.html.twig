@@ -6,7 +6,7 @@
     {# Recorro todas las armas y muestro un recuadro con los datos de cada una #}
     {% for arma in armas %}
         <div id="jefe-{{ loop.index }}" class="jefe flex-fill">
-            <img src="{{ asset(arma.imagen_url) }}">
+            <img src="{{ arma.imagen_url }}">
             <div class="datos">
                 <h3>{{ arma.nombre }}</h3>
                 <p>{{ arma.descripcion }}</p>

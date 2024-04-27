@@ -23,6 +23,11 @@ header a:hover{
 #body-pagina{
     margin: 10px;
 }
+
+#contenido-jefes{
+    display: ruby;
+}
+
 .jefe img{
     width: 500px;
     height: 300px;
@@ -54,7 +59,7 @@ header a:hover{
 }
 
 #fotos-juego{
-    margin: 10px;
+    margin: auto;
 }
 
 
