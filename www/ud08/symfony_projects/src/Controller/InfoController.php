@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class InfoController extends AbstractController{
 
@@ -64,7 +67,7 @@ class InfoController extends AbstractController{
     }
 
     #[Route('/armas',name:"armas")]
-    public function mejoresArmas(){
+    public function mejoresArmas(HttpClientInterface $httpClient){
         $armasDarkSouls = [
             [
                 "nombre" => "Claymore",
@@ -95,5 +98,18 @@ class InfoController extends AbstractController{
         return $this->render("armas.html.twig",[
             "armas"=>$armasDarkSouls
         ]);    
+    }
+
+    #[Route('/sponsors',name:"sponsors")]
+    public function verSponsors(HttpClientInterface $httpClient,CacheInterface $cache){
+        $productos=$cache->get('productos_sponsor',function(CacheItemInterface $cacheItem) use($httpClient){
+            $cacheItem->expiresAfter(10);
+            $response=$httpClient->request('GET','https://dummyjson.com/products');
+            return $response->toArray()['products'];
+        });
+        //dd($productos);
+        return $this->render("productos.html.twig",[
+            'productos'=>$productos
+        ]);
     }
 }

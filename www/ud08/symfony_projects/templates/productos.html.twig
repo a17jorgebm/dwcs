@@ -2,15 +2,13 @@
 
 {% block corpo %}
 
-{{ component('Alerta') }}
-
 <div id="contenido-jefes">
-    {% for jefe in jefes %}
+    {% for producto in productos %}
         <div id="jefe-{{ loop.index }}" class="jefe flex-fill">
-            <img src="{{ jefe.image }}">
+            <img src="{{ producto.images[0] }}">
             <div class="datos">
-                <h3>{{ jefe.name }}</h3>
-                <p>{{ jefe.description }}</p>
+                <h3>{{ producto.title }}</h3>
+                <p>{{ producto.description }}</p>
             </div>
         </div>
     {% endfor %}
