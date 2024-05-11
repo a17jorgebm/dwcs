@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block corpo %}
+
+<div id="contenido-jefes">
+    {% for jefe in jefes %}
+        <div id="jefe-{{ loop.index }}" class="jefe flex-fill">
+            <img src="{{ jefe.image }}">
+            <div class="datos">
+                <h3>{{ jefe.name }}</h3>
+                <p>{{ jefe.description }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

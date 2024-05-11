@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Dark Souls Guide</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('styles/estilos.css') }}">
+        <script type="text/javascript" href="{{ asset('js/scripts.js') }}"></script>
+    </head>
+
+    <body>
+        {% include "header.html.twig" %}
+
+        <div id="body-pagina" class="d-flex">
+        {% block corpo %}{% endblock %}
+        </div>
+    </body>
+</html>

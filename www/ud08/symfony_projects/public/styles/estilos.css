@@ -1,0 +1,66 @@
+body{
+    background-color: #38322b;
+    color: #f4efde;
+}
+header{
+    background-color: #1b1a17;
+    display: flex;
+    color: #f4efde;
+    border-radius: 5px;
+    justify-content: space-between;
+    margin: 8px;
+    padding: 14px;
+    align-items: center;
+}
+header a{
+    text-decoration: none;
+    color: #f4efde;
+    padding: 7px;
+}
+header a:hover{
+    color: rgb(221, 213, 186);
+}
+#body-pagina{
+    margin: 10px;
+}
+
+#contenido-jefes{
+    display: ruby;
+}
+
+.jefe img{
+    width: 500px;
+    height: 300px;
+}
+
+.jefe{
+    background-color:#3d3631;
+    margin: 15px;
+    display: inline-flex;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+.jefe:hover{
+    transform: scale(1.02);
+}
+
+.jefe .datos{
+    margin: 15px;
+    max-width: 300px;
+}
+
+#informacion-juego{
+    width: 50%;
+    margin: 30px;
+    padding: 10px;
+    background-color: #27272f;
+    border-radius: 5px;
+}
+
+#fotos-juego{
+    margin: auto;
+}
+
+
+
