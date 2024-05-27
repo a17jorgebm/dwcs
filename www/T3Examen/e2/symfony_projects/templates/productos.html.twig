@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div id="contenido-jefes">
+    {% for producto in productos %}
+        <div id="producto-{{ loop.index }}" class="producto flex-fill">
+            <img styles="width: 70px;" src="{{ producto.images[0] }}">
+            <div class="datos">
+                <h3>{{ producto.title }}</h3>
+                <p>{{ producto.description }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
